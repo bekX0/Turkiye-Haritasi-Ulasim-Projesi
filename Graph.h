@@ -22,8 +22,7 @@ class Graph{
 
     public:
         //constructors
-        //Graph(int V);
-        Graph(string files[]); // [cities&adjCities, cities&costs]
+        Graph(string files[]); // [cities&codes, cities&adjCities, cities&costs]
 
         //copy constructor
         //Graph(const Graph& G);
@@ -39,12 +38,13 @@ class Graph{
         //bool remove_vertex(int); // for file reading
         bool add_edge(int, int);
         bool remove_edge(int, int);
-        int get_vertex_value(int);
+        //int get_vertex_value(int); no need
         int getV();
         int getE();
-        string toString();
+        string toString(int code);
         int get_edge_value(int, int);
         bool set_edge_value(int, int, int);
+        bool set_edge_value(Node*, int);
         friend ostream& operator<<(ostream&, const Graph&);
 };
 

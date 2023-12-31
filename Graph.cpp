@@ -40,7 +40,7 @@ Graph::Graph(string files[]){
     file2.close();
     //to declare costs 
     ifstream file3(files[2]);
-    lineCounter = 1;
+    int baseCity = 1;
     //avoid first line (titles)
     getline(file3, line);
     int edgeCount = 0;
@@ -51,18 +51,18 @@ Graph::Graph(string files[]){
         getline(ss, token, ';'); // city
         int targetCity = 1;
         while(getline(ss, token, ';')){
-            if(targetCity == lineCounter){
+            if(targetCity == baseCity){
                 ++targetCity;
                 continue;
             }
-            Node* vertex = adjacentVertex(lineCounter, targetCity);
+            Node* vertex = adjacentVertex(baseCity, targetCity);
             if(vertex != nullptr){
-                vertex->edgeCost = stoi(token);
+                set_edge_value(vertex, stoi(token));
                 ++edgeCount;
             }
             ++targetCity;
         }
-        ++lineCounter;
+        ++baseCity;
     }
     file3.close();
 
@@ -134,15 +134,13 @@ int Graph::getV() {return V;}
 
 int Graph::getE() {return E;}
 
-string Graph::toString(){
+string Graph::toString(int code){
     stringstream result;
-    for(int i = 1; i<=V; ++i){
-        result << "---------------------------------------------------------------" << endl;
-        result << "City Name: " << labelOfNodes[i-1] << endl;
-        result << "City Code: " << i << endl;
-        result << "Adjacent Cities: " << adjList[i] << endl;
-        result << "---------------------------------------------------------------" << endl;
-    }
+    result << "---------------------------------------------------------------" << endl;
+    result << "City Name: " << labelOfNodes[code-1] << endl;
+    result << "City Code: " << code << endl;
+    result << "Adjacent Cities: " << adjList[code] << endl;
+    result << "---------------------------------------------------------------" << endl;
     return result.str();
 }
 
@@ -172,5 +170,10 @@ bool Graph::set_edge_value(int x, int y, int cost){
         city->edgeCost = cost;
         return true;
     }
+}
+bool Graph::set_edge_value(Node* city, int cost){
+    if(!city) return false;
+    city->edgeCost = cost;
+    return true;
 }
 //----------------------------------------------------------------

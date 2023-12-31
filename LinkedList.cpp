@@ -34,26 +34,21 @@ void LinkedList::insert(int val)
 
 // remove method
 void LinkedList::remove(int val){
-    Node *current = head;
-    Node *pre = nullptr;
+    Node* current = head;
+    
+    if(!current) return;
 
-    while (current != nullptr && current->value != val){
-        pre = current;
+    while(current->next && current->next->value != val){
         current = current->next;
     }
 
-    if (current == nullptr){
-        std::cout << "Value " << val << " not found!" << std::endl;
-        return;
-    }
-
-    if (pre == nullptr){
-        head = current->next;
+    if(!current->next){
+        std::cout << "City with code " << val << " is not exists!"<< std::endl;
     }else{
-        pre->next = current->next;
+        Node* toDelete = current->next;
+        current->next = toDelete->next;
+        delete toDelete;
     }
-
-    delete current;
 }
 
 // display  method
@@ -68,13 +63,4 @@ std::ostream &operator<<(std::ostream &os, const LinkedList &L){
 
 Node* LinkedList::getHead(){
     return head;
-}
-
-Node* LinkedList::getTail(){
-    Node* current = head;
-    if(current == nullptr) return head;
-    while (current->next != nullptr){
-        current = current->next;
-    }
-    return current;
 }

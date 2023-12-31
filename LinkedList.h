@@ -37,10 +37,6 @@ public:
 
     //getter for head
     Node* getHead();
-    //getter for tail
-    Node* getTail();
-
-    
 };
 
 #endif
