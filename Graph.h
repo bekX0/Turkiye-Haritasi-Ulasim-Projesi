@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <queue>
 #include "LinkedList.h"
 #include <fstream>
 #include <sstream>
@@ -20,6 +21,7 @@ class Graph{
 
         unordered_map<int, LinkedList> adjList;
 
+        pair<int*, int*> dijkstra(int);
     public:
         //constructors
         Graph(string files[]); // [cities&codes, cities&adjCities, cities&costs]
@@ -46,6 +48,8 @@ class Graph{
         bool set_edge_value(int, int, int);
         bool set_edge_value(Node*, int);
         friend ostream& operator<<(ostream&, const Graph&);
+        void findKShortestCities(int, int);
+        void shortestPath(int, int);
 };
 
 #endif

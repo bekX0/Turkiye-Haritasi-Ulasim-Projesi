@@ -14,6 +14,12 @@ public:
     Node(int value);
 };
 
+struct CompareNodes {
+    bool operator()(const Node* l, const Node* r) const {
+        return l->edgeCost > r->edgeCost;
+    }
+};
+
 class LinkedList {
 private:
     Node* head;

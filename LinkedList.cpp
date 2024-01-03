@@ -54,7 +54,7 @@ void LinkedList::remove(int val){
 // display  method
 std::ostream &operator<<(std::ostream &os, const LinkedList &L){
     Node* current = L.head;
-    while (current->next != nullptr){
+    while (current != nullptr){
         os << current->value << "(" << current->edgeCost << ")" << "->";
         current = current->next;
     }

@@ -176,4 +176,103 @@ bool Graph::set_edge_value(Node* city, int cost){
     city->edgeCost = cost;
     return true;
 }
+pair<int*, int*> Graph::dijkstra(int cityCode){
+    int* dist = new int[this->V];
+    int* pre = new int[this->V];
+    for(int i=0; i< this->V;++i){
+        dist[i] = INT_MAX;
+        pre[i] = -1;
+    }
+    // vector<int> dist(this->V, INT_MAX);
+    // vector<int> pre(this->V, -1);
+    vector<bool> isExplored(this->V, false);
+    priority_queue<Node*, vector<Node*>, CompareNodes> pq;
+
+    dist[cityCode-1] = 0;
+    isExplored[cityCode-1] = true;
+    
+    Node* travel = this->adjList[cityCode].getHead();
+    while(travel){
+            pq.push(travel);
+            dist[travel->value - 1] = travel->edgeCost;
+            pre[travel->value -1] = cityCode;
+            travel = travel->next;
+    }
+    
+    
+    
+    do{
+        Node* exploreNode = pq.top();
+        pq.pop();
+        isExplored[exploreNode->value - 1] = true;
+        Node* travel = this->adjList[exploreNode->value].getHead();
+        while(travel){
+            if(isExplored[travel->value - 1]){
+                travel = travel->next;
+                continue;
+            }else{
+                pq.push(travel);
+                if(travel->edgeCost + dist[exploreNode->value - 1] < dist[travel->value - 1]){
+                    dist[travel->value - 1] = travel->edgeCost + dist[exploreNode->value - 1];
+                    pre[travel->value -1] = exploreNode->value; // writes pre, previous cityCode
+                }
+            }
+            travel = travel->next;
+        }
+    }while(!pq.empty());
+
+    // for(int i = 1; i <= V; ++i){
+    //     cout << "İl:" << i << " en kısa yol:" << dist[i-1] << " pre=> " << pre[i-1] << endl;
+    // }
+
+    return make_pair(dist, pre);
+}
+
+void Graph::findKShortestCities(int cityCode, int k){
+    pair<int*, int*> results = dijkstra(cityCode);
+
+    int* distances = results.first;
+    int* kCities = new int[k];
+
+    for(int i=0; i < k; ++i){
+        int min = INT_MAX;
+        int idx_min = -1;
+        for(int j = 0; j < this->V;++j){
+            if(distances[j] == 0) continue;
+            if(distances[j] < min){
+                min = distances[j];
+                idx_min = j;
+            }
+        }
+        kCities[i] = idx_min +1;
+        distances[idx_min] = 0;
+    }
+
+    for(int i = 0; i< k; ++i){
+        cout << kCities[i] << "->";
+    }
+    cout<< endl;
+
+    delete[] distances;
+    delete[] kCities;
+    
+    return;
+}
+
+void Graph::shortestPath(int startCity, int targetCity){
+    pair<int*, int*> results = dijkstra(startCity);
+
+    int* distances = results.first;
+    int* predecessors = results.second;
+
+    int cityCode = targetCity;
+    string road = to_string(targetCity);
+
+    while(predecessors[cityCode-1] != -1){
+        cityCode = predecessors[cityCode-1];
+        road = to_string(cityCode) + "->" + road;
+    }
+
+    cout << endl << road << endl;
+}
 //----------------------------------------------------------------

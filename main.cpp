@@ -27,7 +27,20 @@ int main(){
             break;
         case 'b':
             cout << G.toString(selectedCity);
-            break;        
+            break;     
+        case 'c':
+            if(G.getV() < selectedCity && selectedCity < 0) break;
+            int k;
+            cout << "k: ";
+            cin >> k;
+            G.findKShortestCities(selectedCity, k); 
+            break;
+        case 'd':
+            int target;
+            cout << "Target city code: ";
+            cin >> target;
+            G.shortestPath(selectedCity, target);
+            break;   
         default:
             break;
         }
