@@ -158,14 +158,14 @@ ostream& operator<<(ostream& os, const Graph& G) {
 int Graph::get_edge_value(int x, int y){
     Node* city = adjacentVertex(x, y);
 
-    if(city) return -1;
+    if(city == nullptr) return -1;
     else return city->edgeCost;
 }
 
 bool Graph::set_edge_value(int x, int y, int cost){
     Node* city = adjacentVertex(x, y);
 
-    if(city) return false;
+    if(city == nullptr) return false;
     else{
         city->edgeCost = cost;
         return true;
@@ -270,9 +270,13 @@ void Graph::shortestPath(int startCity, int targetCity){
 
     while(predecessors[cityCode-1] != -1){
         cityCode = predecessors[cityCode-1];
-        road = to_string(cityCode) + "->" + road;
+        road = to_string(cityCode) + "(" + labelOfNodes[cityCode-1] + ")" + "->" + road;
     }
 
-    cout << endl << road << endl;
-}
+    cout << endl << road << "=>>" << distances[targetCity-1] << endl;
+
+    delete[] distances;
+    delete[] predecessors;
+
+    return;
 //----------------------------------------------------------------
