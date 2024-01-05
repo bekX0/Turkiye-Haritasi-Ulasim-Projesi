@@ -266,7 +266,7 @@ void Graph::shortestPath(int startCity, int targetCity){
     int* predecessors = results.second;
 
     int cityCode = targetCity;
-    string road = to_string(targetCity);
+    string road = to_string(targetCity) + "(" + labelOfNodes[targetCity-1] + ")";
 
     while(predecessors[cityCode-1] != -1){
         cityCode = predecessors[cityCode-1];
@@ -279,4 +279,5 @@ void Graph::shortestPath(int startCity, int targetCity){
     delete[] predecessors;
 
     return;
+}
 //----------------------------------------------------------------
