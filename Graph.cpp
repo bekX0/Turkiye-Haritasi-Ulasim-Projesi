@@ -207,10 +207,7 @@ pair<int*, int*> Graph::dijkstra(int cityCode){
         isExplored[exploreNode->value - 1] = true;
         Node* travel = this->adjList[exploreNode->value].getHead();
         while(travel){
-            if(isExplored[travel->value - 1]){
-                travel = travel->next;
-                continue;
-            }else{
+            if(!isExplored[travel->value - 1]){
                 pq.push(travel);
                 if(travel->edgeCost + dist[exploreNode->value - 1] < dist[travel->value - 1]){
                     dist[travel->value - 1] = travel->edgeCost + dist[exploreNode->value - 1];
@@ -268,11 +265,18 @@ void Graph::shortestPath(int startCity, int targetCity){
     int cityCode = targetCity;
     string road = to_string(targetCity);
 
+    int totalDist = 0;
     while(predecessors[cityCode-1] != -1){
         cityCode = predecessors[cityCode-1];
+        totalDist += distances[cityCode-1];
         road = to_string(cityCode) + "->" + road;
     }
 
-    cout << endl << road << endl;
+    cout << endl << road <<" Total dist: " << totalDist <<  endl;
+
+    delete[] distances;
+    delete[] predecessors;
+
+    return;
 }
 //----------------------------------------------------------------
